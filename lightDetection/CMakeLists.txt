@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.0)
+project( lightDetect )
+find_package( OpenCV REQUIRED )
+add_executable( lightDetect lightDetect.cpp )
+target_link_libraries( lightDetect ${OpenCV_LIBS} )
