@@ -4,3 +4,14 @@
 *.creator.user
 *.files
 *.includes
+
+### CMake ###
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
+### Cpp ###
+*.so
+*.o
