@@ -5,9 +5,9 @@
 #include <opencv2/opencv.hpp>
 
 #define HIST_FRAMES 5     // Number of frames to keep in history
-#define LIGHT_DIST_PIX 35 // Pixels between the center of red and green lights
+#define LIGHT_DIST_PIX 45 // Pixels between the center of red and green lights
 #define MAXSUMRESULTSRED2GREEN 3400000 // experimental value of the max of the sum of all results pixels during red2green
-#define TRIGGERPERCENTAGE .8 // The percentage an event must be from experimental, accounting for noise, to trigger
+#define TRIGGERPERCENTAGE .75 // The percentage an event must be from experimental, accounting for noise, to trigger
 
 using namespace cv;
 using namespace std;
