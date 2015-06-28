@@ -6,7 +6,7 @@
 
 #define HIST_FRAMES 5     // Number of frames to keep in history
 #define LIGHT_DIST_PIX 60 // Pixels between the center of red and green lights
-#define MAXSUMRESULTSRED2GREEN 36000 // experimental value of the max of the sum of all results pixels during red2green
+#define MAXSUMRESULTSRED2GREEN 36000 // experimental value of the max of the 2d traffic light filter
 #define TRIGGERPERCENTAGE .85 // The percentage an event must be from experimental, accounting for noise, to trigger
 #define LIGHT_SIZE_PIX 50
 
