@@ -5,9 +5,10 @@
 #include <opencv2/opencv.hpp>
 
 #define HIST_FRAMES 5     // Number of frames to keep in history
-#define LIGHT_DIST_PIX 45 // Pixels between the center of red and green lights
-#define MAXSUMRESULTSRED2GREEN 3400000 // experimental value of the max of the sum of all results pixels during red2green
-#define TRIGGERPERCENTAGE .75 // The percentage an event must be from experimental, accounting for noise, to trigger
+#define LIGHT_DIST_PIX 60 // Pixels between the center of red and green lights
+#define MAXSUMRESULTSRED2GREEN 36000 // experimental value of the max of the sum of all results pixels during red2green
+#define TRIGGERPERCENTAGE .85 // The percentage an event must be from experimental, accounting for noise, to trigger
+#define LIGHT_SIZE_PIX 50
 
 using namespace cv;
 using namespace std;
@@ -65,21 +66,26 @@ int main(int argc, char** argv)
         gaininggreen.convertTo(gaininggreen, CV_16UC1, 1, 0);
         losingred.convertTo(losingred, CV_16UC1, 1, 0);
         geometricmean = gaininggreen.mul(losingred);
-        Mat result(gaining.size(), CV_8UC1);
-//        geometricmean.convertTo(result, CV_8UC1, 1/255.0, 0);
-//        Mat both = gaining/2 + losing/2;
+        Mat centerLightChangeness(gaining.size(), CV_32FC1);
+        Mat kernal = Mat::ones(LIGHT_SIZE_PIX, LIGHT_SIZE_PIX, CV_32FC1)/(LIGHT_SIZE_PIX*LIGHT_SIZE_PIX);
+        filter2D(geometricmean, centerLightChangeness, CV_32FC1, kernal);
 
-        double sumresult = sum(result)[0];
-        if (sumresult > TRIGGERPERCENTAGE * MAXSUMRESULTSRED2GREEN)
+        double minResult, maxResult;
+        minMaxLoc(centerLightChangeness, &minResult, &maxResult);
+
+        if (maxResult > TRIGGERPERCENTAGE * MAXSUMRESULTSRED2GREEN)
             cout << "GO GO GO!!!!!!" << endl;
         else
             cout << "Wait for it...";
-        cout << "   " << sumresult << endl;
+        cout << "   " << maxResult << endl;
 
-//        imshow("losing", losing);
-//        imshow("gaining", gaining);
-//        imshow("lightchange", result);
-//        imshow("both", both);
+//        Mat result;
+//        geometricmean.convertTo(result, CV_8UC1, 1/255.0, 0);
+//        gaininggreen.convertTo(gaininggreen, CV_8UC1, 1, 0);
+//        losingred.convertTo(losingred, CV_8UC1, 1, 0);
+//        imshow("losingred", losingred);
+//        imshow("gaininggreen", gaininggreen);
+//        imshow("centerLightChangeness", result);
 //        imshow("frame", frame);
 
       if (waitKey(30) >= 0) break;
